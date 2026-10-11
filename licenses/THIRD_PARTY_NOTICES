@@ -1,0 +1,32 @@
+Seedr Connector third-party notices
+
+The release includes unmodified third-party components listed below. Full
+license texts are bundled in licenses/ next to the Linux binaries and in
+/licenses in the container image. Seedr proprietary terms do not replace these
+licenses or restrict rights they grant for their respective components.
+
+Go standard library/runtime, Go 1.27.2 — BSD-3-Clause
+Copyright 2009 The Go Authors.
+License: licenses/Go-BSD-3-Clause.txt
+Exact source: https://go.dev/dl/go1.27.2.src.tar.gz
+
+ golang.org/x/net v0.60.0 — BSD-3-Clause
+Copyright 2009 The Go Authors.
+License: licenses/x-net-BSD-3-Clause.txt
+Exact source: https://proxy.golang.org/golang.org/x/net/@v/v0.60.0.zip
+
+ github.com/coder/websocket v1.8.15 — ISC
+Copyright (c) 2025 Coder
+License: licenses/websocket-ISC.txt
+Exact source: https://proxy.golang.org/github.com/coder/websocket/@v/v1.8.15.zip
+
+ github.com/hashicorp/yamux v0.1.1 — MPL-2.0
+Copyright HashiCorp, Inc. and the yamux contributors.
+License: licenses/yamux-MPL-2.0.txt
+Exact Corresponding Source, including original notices and build files:
+https://proxy.golang.org/github.com/hashicorp/yamux/@v/v0.1.1.zip
+Source tree: https://github.com/hashicorp/yamux/tree/v0.1.1
+No yamux source files have been modified in this release. Recipients may obtain,
+use, modify and redistribute this covered source under MPL-2.0, independently
+of the proprietary agent. The source archive URL provides the exact version
+used in these binaries without charge.

@@ -1,0 +1,14 @@
+Copyright (c) 2026 Seedr. All rights reserved.
+
+Seedr Connector is proprietary software. Seedr grants recipients of an official
+binary a nonexclusive right to run that binary to connect their own authorized
+storage to Seedr services, subject to the Seedr terms of service.
+
+No permission is granted to publish or redistribute Seedr proprietary source
+code or binaries without written permission from Seedr. No rights are granted
+except as expressly stated here or required by applicable law.
+
+Third-party components retain their own licenses. Their notices, full license
+texts and source availability are provided in THIRD_PARTY_NOTICES and licenses/.
+Those licenses govern the corresponding third-party components independently
+of these proprietary terms.

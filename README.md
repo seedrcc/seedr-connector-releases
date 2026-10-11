@@ -4,12 +4,15 @@ Seedr Connector makes selected NAS folders available to your Seedr account.
 It opens an outbound encrypted connection; your NAS needs internet access to
 Seedr on TCP 443, with DNS working. You do not need port forwarding.
 
-Use the release version supplied by Seedr in place of `<version>` below.
-The image reference is `ghcr.io/seedrcc/seedr-connector:<version>` and Linux
-binary downloads are at `https://github.com/seedrcc/seedr-connector-releases/releases/tag/v<version>`.
-Use a specific version, and verify downloaded binaries with `SHA256SUMS`.
-These are the intended release locations; availability begins when Seedr
-announces that version.
+Current release: **1.0.0**.
+
+- Container image (amd64, arm64, armv7): `ghcr.io/seedrcc/seedr-connector:1.0.0`
+  (`:latest` follows the newest release; pin `1.0.0` for predictable updates).
+- Linux binaries: <https://github.com/seedrcc/seedr-connector-releases/releases/tag/v1.0.0>.
+  Verify downloaded binaries with `SHA256SUMS`.
+
+For a later release, replace `1.0.0` below with the version shown on the
+[releases page](https://github.com/seedrcc/seedr-connector-releases/releases).
 
 ## Prepare your folders
 
@@ -86,7 +89,7 @@ there. Use absolute paths such as `/volume1/media` for shares.
 
 In **Registry → Settings → Add**, add the registry URL `https://ghcr.io`
 and name it `ghcr.io`. Use the full image reference
-`ghcr.io/seedrcc/seedr-connector:<version>`. If your DSM release cannot search
+`ghcr.io/seedrcc/seedr-connector:1.0.0`. If your DSM release cannot search
 that registry, use the Compose project below; its explicit image reference
 pulls directly from ghcr.io. [Synology registry settings](https://kb.synology.com/en-us/DSM/help/ContainerManager/docker_registry?version=7).
 
@@ -115,7 +118,7 @@ Leave the default web URL port disabled. [QNAP application guide](https://www.qn
 ## TrueNAS SCALE
 
 Use **Apps → Discover Apps → Custom App** on Docker-based SCALE releases.
-Set the supplied image repository and tag. Configure a non-root user/group
+Set image repository `ghcr.io/seedrcc/seedr-connector` and tag `1.0.0`. Configure a non-root user/group
 matching your dataset permissions, then add the three host-path mounts from the
 table above, using paths under `/mnt/POOL/DATASET`. Keep host networking and
 privileged mode disabled, with no ports.
@@ -130,7 +133,7 @@ cannot preserve this non-root setup. [TrueNAS custom-app guide](https://www.true
 ## Unraid
 
 Enable Docker, then choose **Docker → Add Container**. Name it `seedr-connector`
-and enter the supplied image as Repository. Use bridge networking, privileged
+and enter `ghcr.io/seedrcc/seedr-connector:1.0.0` as Repository. Use bridge networking, privileged
 mode off, no ports, and the three path mappings above. A persistent directory
 such as `/mnt/user/appdata/seedr-connector` can hold configuration and state;
 map only the selected share, for example `/mnt/user/media`, to `/shares/data`.
@@ -150,7 +153,7 @@ export add `:ro` to the share mount as well as `read_only: true` in JSON.
 ```yaml
 services:
   connector:
-    image: "ghcr.io/seedrcc/seedr-connector:<version>"
+    image: "ghcr.io/seedrcc/seedr-connector:1.0.0"
     user: "1000:1000"
     command: [run, --config, /config/config.json, --state, /state]
     restart: unless-stopped
@@ -172,13 +175,13 @@ docker compose logs --tail 20 connector
 ```
 
 The repository's `compose.yaml` instead reads `SEEDR_CONNECTOR_IMAGE`, `NAS_UID`,
-`NAS_GID` and `NAS_SHARE_PATH`. Set the image variable to the supplied reference.
+`NAS_GID` and `NAS_SHARE_PATH`. Set the image variable to `ghcr.io/seedrcc/seedr-connector:1.0.0`.
 An OCI archive supplied offline can be loaded with a compatible Docker engine
 or `podman load -i seedr-connector.oci.tar`; use the reference reported by load.
 
 Without Compose, pair using `docker run --rm --user UID:GID --read-only
 --cap-drop ALL --security-opt no-new-privileges:true` with the same three `-v`
-mounts and `ghcr.io/seedrcc/seedr-connector:<version> pair --config /config/config.json --state /state`. For the
+mounts and `ghcr.io/seedrcc/seedr-connector:1.0.0 pair --config /config/config.json --state /state`. For the
 normal run, add `-d --name seedr-connector --restart unless-stopped` and replace
 `pair` with `run`. Do not enable restart for the one-time pairing container.
 
@@ -193,7 +196,7 @@ Choose the artifact matching `uname -m`:
 | `armv7l` | `seedr-connector-linux-armv7` |
 
 Download that binary, `SHA256SUMS`, `LICENSE`, `THIRD_PARTY_NOTICES` and the
-`licenses/` directory from `https://github.com/seedrcc/seedr-connector-releases/releases/tag/v<version>`. From their
+`licenses/` directory from `https://github.com/seedrcc/seedr-connector-releases/releases/tag/v1.0.0`. From their
 folder, verify the downloaded artifact before executing it:
 
 ```sh
@@ -221,7 +224,8 @@ CA bundle if Linux cannot locate it. Keep certificate verification enabled.
 Temporary network failures reconnect automatically with randomized backoff.
 After a NAS restart, run with the same state directory; do not pair again.
 For an update, stop the connector, retain configuration/state, replace the image
-or verified binary, and start it again with the same UID/GID.
+or verified binary, and start it again with the same UID/GID. With Compose,
+change the image tag, then run `docker compose pull && docker compose up -d`.
 
 Disconnecting/revoking in Seedr stops access to that connector and its active
 transfers. Stop its container/service too. To reconnect after revocation, run
